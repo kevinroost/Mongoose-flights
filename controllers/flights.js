@@ -15,9 +15,13 @@ function index(req, res) {
   })
 }
 
-function newMovie(req, res) {
+function newFlight(req, res) {
+  // const newFlight = new Flight()
+  // const departDate = newFlight.departs.toISOString()
+  console.log(req.body.departs);
   res.render('flights/new', {
     title: 'New Flight',
+    departDate
   })
 }
 
@@ -27,7 +31,6 @@ function create(req, res) {
   }
   Flight.create(req.body)
   .then(flights => {
-    console.log(flights);
     res.redirect('/flights')
   })
   .catch(err => {
@@ -36,8 +39,65 @@ function create(req, res) {
   })
 }
 
+function deleteFlight(req, res) {
+  Flight.findByIdAndDelete(req.params.id)
+  .then(flights => {
+    res.redirect('/flights')
+  })
+  .catch(err => {
+    console.log(err)
+    res.redirect('/')
+  })
+}
+
+function show(req, res) {
+  Flight.findById(req.params.id)
+  .then(flight => {
+    res.render('flights/show', {
+      title: 'Movie Details',
+      flight: flight
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    res.redirect('/')
+  })
+}
+
+function edit(req, res) {
+  Flight.findById(req.params.id)
+  .then(flight => {
+    res.render('flights/edit', {
+      title: 'Edit Details',
+      flight: flight
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    res.redirect('/')
+  })
+}
+
+function update(req, res) {
+  for (let key in req.body) {
+    if(req.body[key] === "") delete req.body[key]
+  }
+  Flight.findByIdAndUpdate(req.params.id, req.body, {new: true})
+  .then(flight => {
+    res.redirect(`/flights/${flight.id}`)
+  })
+  .catch(err => {
+    console.log(err)
+    res.redirect('/')
+  })
+}
+
 export {
-  newMovie as new,
+  newFlight as new,
   create,
   index,
+  deleteFlight as delete,
+  show,
+  edit,
+  update,
 }

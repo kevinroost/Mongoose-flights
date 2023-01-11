@@ -3,12 +3,14 @@
 <%- include('../partials/nav') %>
 
 <main>
+
   <h1><%= title %></h1>
-  <form action="/flights" method="POST">
+  <form action="/flights/<%= flight._id %>?_method=PUT" method="POST">
     <label for="airline-input">Airline:</label>
-    <input type="text" name="airline" id="airline-input">
+    <input type="text" name="airline" id="airline-input" value="<%= flight.airline %>">
     <label for="airport-input">Airport:</label>
     <select name="airport" id="airport-input">
+      <option value="<%= flight.airport %>" selected><%= flight.airport %></option>
       <option value="AUS">Austin (AUS)</option>
       <option value="DFW">Dallas-Fort Worth (DFW)</option>
       <option value="DEN">Denver (DEN)</option>
@@ -16,12 +18,11 @@
       <option value="SAN">San Francisco (SAN)</option>
     </select>
     <label for="flightNo-input">Flight Number:</label>
-    <input type="text" name="flightNo" id="flightNo-input">
+    <input type="text" name="flightNo" id="flightNo-input" value="<%= flight.flightNo %>">
     <label for="departs-input">Departure Date:</label>
-    <input type="datetime-local" name="departs" id="departs-input" value="<%= departDate %>">
-    <button type="submit">ADD FLIGHT!</button>
+    <input type="datetime-local" name="departs" id="departs-input" value="<%= flight.departs %>">
+    <button type="submit">UPDATE FLIGHT!</button>
   </form>
-</main>
 
 
 <%- include('../partials/footer') %>
