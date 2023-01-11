@@ -16,22 +16,22 @@ function index(req, res) {
 }
 
 function newFlight(req, res) {
-  // const newFlight = new Flight()
-  // const departDate = newFlight.departs.toISOString()
-  console.log(req.body.departs);
+  let defDate = new Date().getFullYear()
   res.render('flights/new', {
     title: 'New Flight',
-    departDate
   })
 }
 
 function create(req, res) {
+  // const newFlight = new Flight()
+  // const departYear = newFlight.departs.getFullYear()
   for (let key in req.body) {
     if (req.body[key] === '') delete req.body[key]
   }
   Flight.create(req.body)
   .then(flights => {
     res.redirect('/flights')
+    console.log(flights.departs);
   })
   .catch(err => {
     console.log(err)
