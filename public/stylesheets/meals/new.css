@@ -1,0 +1,33 @@
+form {
+  display: grid;
+  grid-gap: 10px;
+  /* grid-template-columns: repeat(2, minmax(auto, 352px)); */
+  font-size: 20px;
+}
+
+form * {
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+form > button {
+  grid-column: span 2;
+  width: 160px;
+  justify-self: center;
+  font-size: 22px;
+}
+
+h2 {
+  justify-self: center;
+}
+
+#display-table * {
+  text-align: center;
+}
+
+#display-table button {
+  font-size: 12px;
+  width: 80px;
+  grid-column: unset;
+}

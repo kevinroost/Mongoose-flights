@@ -1,5 +1,5 @@
 <%- include('../partials/html-head') %>
-<link rel="stylesheet" href="/stylesheets/new.css">
+<link rel="stylesheet" href="/stylesheets/meals/new.css">
 <%- include('../partials/nav') %>
 
 <main>
@@ -11,9 +11,27 @@
   </form>
   <section>
     <h2>List of Meals</h2>
-    <% meals.forEach(meal => { %>
-    <div><%= meal.meal %></div>
-    <% }) %>
+    <table id="display-table">
+      <thead>
+        <th></th>
+        <th>Meal</th>
+      </thead>
+      <tbody>
+        <% meals.forEach(meal => { %>
+        <tr>
+          <td>  
+            <form action="/meals/<%= meal._id %>?_method=DELETE" method="POST">
+              <button type="submit">Remove</button>
+            </form>
+          </td>
+          <td>
+            <%= meal.meal %>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
   </section>
 </main>
 

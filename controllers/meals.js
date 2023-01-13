@@ -26,7 +26,19 @@ function newMeal(req, res) {
   })
 }
 
+function deleteMeal(req, res) {
+  Meal.findByIdAndDelete(req.params.id)
+  .then(meals => {
+    res.redirect('/meals/new')
+  })
+  .catch(err => {
+    console.log(err)
+    res.redirect('/')
+  })
+}
+
 export {
   create,
   newMeal as new,
+  deleteMeal as delete,
 }
