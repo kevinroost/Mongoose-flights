@@ -1,4 +1,5 @@
 import { Flight } from '../models/flight.js'
+import { Meal } from '../models/meal.js'
 
 function index(req, res) {
   Flight.find({})
@@ -23,8 +24,6 @@ function newFlight(req, res) {
 }
 
 function create(req, res) {
-  // const newFlight = new Flight()
-  // const departYear = newFlight.departs.getFullYear()
   for (let key in req.body) {
     if (req.body[key] === '') delete req.body[key]
   }
@@ -52,10 +51,15 @@ function deleteFlight(req, res) {
 
 function show(req, res) {
   Flight.findById(req.params.id)
+  .populate('meals')
   .then(flight => {
-    res.render('flights/show', {
-      title: 'Movie Details',
-      flight: flight
+    Meal.find({_id: {$nin: flight.meals}})
+    .then(meals => {  
+      res.render('flights/show', {
+      title: 'Flight Details',
+      flight: flight,
+      meals: meals
+      })
     })
   })
   .catch(err => {
@@ -123,6 +127,42 @@ function deleteTicket(req, res) {
       res.redirect(`/flights/${flight.id}`)
     })
     .catch(err => {
+      console.log('ERROR', err)
+      res.redirect(`/flights/${flight.id}`)
+    })
+  })
+  .catch(err => {
+    console.log(err)
+    res.redirect(`/flights/${flight.id}`)
+  })
+}
+
+function addMeal(req, res) {
+  Flight.findById(req.params.id)
+  .then(flight => {
+    flight.meals.push(req.body.meal)
+    flight.save()
+    .then(() => {
+      console.log(flight.meals);
+      res.redirect(`/flights/${flight._id}`)
+    })
+  })
+}
+
+function removeMeal(req, res) {
+  Flight.findById(req.params.flightId)
+  .populate('meals')
+  .then(flight => {
+    let targetId = req.params.mealId
+    console.log(flight.meals)
+    flight.meals = [...flight.meals].filter(({id}) => id !== targetId);
+    console.log(flight.meals);
+    flight.save()
+    .then(meal => {
+      res.redirect(`/flights/${flight.id}`)
+      console.log('removed meal', flight);
+    })
+    .catch(err => {
       console.log(err)
       res.redirect('/')
     })
@@ -143,4 +183,6 @@ export {
   update,
   createTicket,
   deleteTicket,
+  addMeal,
+  removeMeal,
 }

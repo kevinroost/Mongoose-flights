@@ -37,8 +37,10 @@ function deleteMeal(req, res) {
   })
 }
 
+
 export {
   create,
   newMeal as new,
   deleteMeal as delete,
+
 }
